@@ -1,6 +1,6 @@
 public class MandelbrotModel
 {
-    private boolean iter(double a, double b) {
+    private int iter(double a, double b) {
        
         double x = 0.0;
         double y = 0.0;

@@ -1,7 +1,7 @@
 public class MandelbrotModel
 {
     private int iter(double a, double b) {
-    int MAX_ITERATIONS = 4;
+    int MAX_ITERATIONS = 1000;
 
        
         double x = 0.0;

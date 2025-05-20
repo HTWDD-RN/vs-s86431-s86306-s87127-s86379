@@ -40,6 +40,7 @@ public class MandelbrotView
         frame.add(panel, BorderLayout.SOUTH);
 
         frame.setSize(width, height+50); // text fields -> +50
+        frame.setVisible(true);
     }
 
     public void updateMandelbrot(Color[][] color) {

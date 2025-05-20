@@ -42,7 +42,7 @@ public class MandelbrotModel
 
         for(int i=0;i<PIXELWIDTH;i++){
             for(int o=0;o<PIXELHEIGHT;i++){
-                colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,ystart+i*(yend-ystart)/PIXELHEIGHT));
+                colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,ystart+o*(yend-ystart)/PIXELHEIGHT));
             }
 
 

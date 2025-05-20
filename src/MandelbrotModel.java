@@ -15,9 +15,9 @@ public class MandelbrotModel
             y = ynew;
             iterations++;
             if (iterations == MAX_ITERATIONS)
-                return false;
+                return MAX_ITERATIONS;
             } while (x <= 2 && y <= 2);
-                return true;
+                return iterations;
     }
 
 }

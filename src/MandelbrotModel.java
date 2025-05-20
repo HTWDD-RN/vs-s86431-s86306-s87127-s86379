@@ -1,6 +1,8 @@
 public class MandelbrotModel
 {
     private int iter(double a, double b) {
+    int MAX_ITERATIONS = 4;
+
        
         double x = 0.0;
         double y = 0.0;
@@ -13,9 +15,9 @@ public class MandelbrotModel
             y = ynew;
             iterations++;
             if (iterations == MAX_ITERATIONS)
-                return MAX_ITERATIONS;
+                return false;
             } while (x <= 2 && y <= 2);
-                return iterations;
+                return true;
     }
 
 }

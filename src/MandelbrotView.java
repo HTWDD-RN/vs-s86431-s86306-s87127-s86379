@@ -40,6 +40,7 @@ public class MandelbrotView
         frame.add(panel, BorderLayout.SOUTH);
 
         frame.setSize(width, height+50); // text fields -> +50
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 

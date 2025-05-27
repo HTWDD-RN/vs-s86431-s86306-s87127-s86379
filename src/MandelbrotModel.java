@@ -39,20 +39,37 @@ public class MandelbrotModel
 
     Color intToColor(int val){
         //TODO: geringe Iterationszahl manuell mit Farben bestücken
-        Color x=Color.BLUE;
-        Color y=new Color(255,153,51); //set by you
-        float blending=(float)val/MAX_ITERATIONS;
+        Color x;
+        Color y;
+        float blending;
 
-        //if(blending>0.5 && blending!=1){
-        //    System.out.println(blending);
-        //}
-        
+        if (val < 25) {
+            x = Color.BLUE;
+            y = new Color(32, 107, 203);
+            blending = (float) val / 25;
+        } else if (val < 150) {
+            x = new Color(32, 107, 203);
+            y = new Color(237, 255, 255);
+            blending = (float) val / (150 - 25);
+        } else {
+            x = new Color(237, 255, 255);
+            y = new Color(255, 153, 51);
+            blending = (float) val / (1000 - 150);
+        }
 
         float inverse_blending = 1 - blending;
 
-        float red =   x.getRed()   * blending   +   y.getRed()   * inverse_blending;
-        float green = x.getGreen() * blending   +   y.getGreen() * inverse_blending;
-        float blue =  x.getBlue()  * blending   +   y.getBlue()  * inverse_blending;
+        float red = x.getRed() * blending + y.getRed() * inverse_blending;
+        float green = x.getGreen() * blending + y.getGreen() * inverse_blending;
+        float blue = x.getBlue() * blending + y.getBlue() * inverse_blending;
+
+        red = red > 255 ? 255 : red;
+        green = green > 255 ? 255 : green;
+        blue = blue > 255 ? 255 : blue;
+
+        red = red < 0 ? 0 : red;
+        green = green < 0 ? 0 : green;
+        blue = blue < 0 ? 0 : blue;
 
         //note that if i pass float values they have to be in the range of 0.0-1.0 
         //and not in 0-255 like the ones i get returned by the getters.

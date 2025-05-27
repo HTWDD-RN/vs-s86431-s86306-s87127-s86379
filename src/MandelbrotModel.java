@@ -33,7 +33,8 @@ public class MandelbrotModel
     }
 
     Color intToColor(int val){
-        //TODO write function
+        if (val != MAX_ITERATIONS)
+            return Color.WHITE;
         return Color.BLACK;
     }
 
@@ -41,7 +42,7 @@ public class MandelbrotModel
         Color[][] colorarray=new Color[PIXELWIDTH][PIXELHEIGHT];
 
         for(int i=0;i<PIXELWIDTH;i++){
-            for(int o=0;o<PIXELHEIGHT;i++){
+            for(int o=0;o<PIXELHEIGHT;o++){
                 colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,ystart+o*(yend-ystart)/PIXELHEIGHT));
             }
 

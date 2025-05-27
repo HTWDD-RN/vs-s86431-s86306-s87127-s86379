@@ -24,7 +24,7 @@ public class MandelbrotView
         initView();
     }
 
-    public void initView() {
+    private void initView() {
         JFrame frame = new JFrame("Mandelbrot");
         JPanel panel = new JPanel(new FlowLayout());
         p = new MandelbrotPanel();

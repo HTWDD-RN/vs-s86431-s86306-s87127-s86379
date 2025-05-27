@@ -6,5 +6,6 @@ public class Main
         MandelbrotView view = new MandelbrotView(presenter);
 
         presenter.setModelAndView(model, view);
+        presenter.calc();
     }
 }

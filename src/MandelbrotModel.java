@@ -81,6 +81,8 @@ public class MandelbrotModel
 
     Color[][] generateColors(double xstart, double xend, double ystart, double yend){
 
+        //TODO: Berechnung in Threads einfügen
+
         int pixelWidthPerThread=PIXELWIDTH/THREADCUNT;
         MandelbrotThread[] threadarray = new MandelbrotThread[THREADCUNT];
 

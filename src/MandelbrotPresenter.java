@@ -50,7 +50,7 @@ public class MandelbrotPresenter implements ActionListener
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         real = Double.parseDouble(view.reField.getText());
-        im = Double.parseDouble(view.reField.getText());
+        im = Double.parseDouble(view.imField.getText());
         zoomFactor = Double.parseDouble(view.zoomField.getText());
         xmin = -1.66666;
         xmax = 1;

@@ -20,7 +20,7 @@ public class MandelbrotModel
             iterations++;
             if (iterations == MAX_ITERATIONS)
                 return MAX_ITERATIONS;
-            } while (x <= 2 && y <= 2);
+            } while (x*x+y*y<=4);
                 return iterations;
     }
 

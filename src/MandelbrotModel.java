@@ -37,6 +37,11 @@ public class MandelbrotModel
         Color y=Color.ORANGE; //set by you
         float blending=(float)val/MAX_ITERATIONS;
 
+        //if(blending>0.5 && blending!=1){
+        //    System.out.println(blending);
+        //}
+        
+
         float inverse_blending = 1 - blending;
 
         float red =   x.getRed()   * blending   +   y.getRed()   * inverse_blending;
@@ -47,7 +52,7 @@ public class MandelbrotModel
         //and not in 0-255 like the ones i get returned by the getters.
         Color blended = new Color (red / 255, green / 255, blue / 255);
         if (val != MAX_ITERATIONS)
-            return Color.WHITE;
+            return blended;
         return Color.BLACK;
     }
 

@@ -32,9 +32,15 @@ public class MandelbrotView
         reField = new JTextField("-0.34837308755059104");
         imField = new JTextField("-0.6065038451823017");
         zoomField = new JTextField("0.8");
+        JButton start = new JButton("Start");
+        start.addActionListener(presenter);
+        panel.add(new JLabel("Real:"));
         panel.add(reField);
+        panel.add(new JLabel("Im:"));
         panel.add(imField);
+        panel.add(new JLabel("Zoom:"));
         panel.add(zoomField);
+        panel.add(start);
 
         frame.add(p, BorderLayout.CENTER);
         frame.add(panel, BorderLayout.SOUTH);

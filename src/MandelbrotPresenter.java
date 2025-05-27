@@ -1,6 +1,8 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MandelbrotPresenter
+public class MandelbrotPresenter implements ActionListener
 {
     MandelbrotView view;
     MandelbrotModel model;
@@ -25,5 +27,10 @@ public class MandelbrotPresenter
         Color[][] c;
         c = model.generateColors(xmin, xmax, ymin, ymax);
         view.updateMandelbrot(c);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+
     }
 }

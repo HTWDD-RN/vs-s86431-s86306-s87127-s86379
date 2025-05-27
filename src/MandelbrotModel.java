@@ -35,7 +35,7 @@ public class MandelbrotModel
     Color intToColor(int val){
         //TODO: geringe Iterationszahl manuell mit Farben bestücken
         Color x=Color.BLUE;
-        Color y=Color.ORANGE; //set by you
+        Color y=new Color(255,153,51); //set by you
         float blending=(float)val/MAX_ITERATIONS;
 
         //if(blending>0.5 && blending!=1){

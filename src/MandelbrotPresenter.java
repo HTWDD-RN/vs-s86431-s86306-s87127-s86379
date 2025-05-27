@@ -28,14 +28,13 @@ public class MandelbrotPresenter implements ActionListener
         model.setPIXELHEIGHT(pixelHeight);
         model.setPIXELWIDTH(pixelWidth);
         real = Double.parseDouble(view.reField.getText());
-        im = Double.parseDouble(view.reField.getText());
+        im = Double.parseDouble(view.imField.getText());
         zoomFactor = Double.parseDouble(view.zoomField.getText());
     }
 
     public void calc() {
         Color[][] c;
         for (int i = 0; i < ZOOM_STEPS; i++) {
-            System.out.println(i);
             c = model.generateColors(xmin, xmax, ymin, ymax);
             view.updateMandelbrot(c);
             double x = xmax - xmin;

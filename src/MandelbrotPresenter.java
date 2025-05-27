@@ -21,6 +21,8 @@ public class MandelbrotPresenter implements ActionListener
     double ymin = -1;
     double ymax = 1;
 
+    ZoomThread thread;
+
     public void setModelAndView(MandelbrotModel model, MandelbrotView view) {
         this.model = model;
         this.view = view;
@@ -33,18 +35,12 @@ public class MandelbrotPresenter implements ActionListener
     }
 
     public void calc() {
-        Color[][] c;
-        for (int i = 0; i < ZOOM_STEPS; i++) {
-            c = model.generateColors(xmin, xmax, ymin, ymax);
-            view.updateMandelbrot(c);
-            double x = xmax - xmin;
-            double y = ymax - ymin;
-
-            xmin = real - (x/2)*zoomFactor;
-            xmax = real + (x/2)*zoomFactor;
-            ymin = im - (y/2)*zoomFactor;
-            ymax = im + (y/2)*zoomFactor;
+        if (thread != null) {
+            thread.interrupt();
+            thread = null;
         }
+        thread = new ZoomThread();
+        thread.start();
     }
 
     @Override
@@ -56,5 +52,26 @@ public class MandelbrotPresenter implements ActionListener
         xmax = 1;
         ymin = -1;
         ymax = 1;
+        calc();
+    }
+
+    public class ZoomThread extends Thread
+    {
+        @Override
+        public void run() {
+            Color[][] c;
+            for (int i = 0; i < ZOOM_STEPS; i++) {
+                c = model.generateColors(xmin, xmax, ymin, ymax);
+                UpdateRequest update = new UpdateRequest(view, c);
+                EventQueue.invokeLater(update);
+                double x = xmax - xmin;
+                double y = ymax - ymin;
+
+                xmin = real - (x/2)*zoomFactor;
+                xmax = real + (x/2)*zoomFactor;
+                ymin = im - (y/2)*zoomFactor;
+                ymax = im + (y/2)*zoomFactor;
+            }
+        }
     }
 }

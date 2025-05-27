@@ -5,6 +5,7 @@ public class MandelbrotModel
     int MAX_ITERATIONS = 1000;
     int PIXELHEIGHT;
     int PIXELWIDTH;
+    int THREADCUNT=4;
 
     private int iter(double a, double b) {
 
@@ -30,6 +31,10 @@ public class MandelbrotModel
 
     public void setPIXELWIDTH(int width){
         PIXELWIDTH=width;
+    }
+
+    public void setTHREADCOUNT(int cunt){
+        this.THREADCUNT=cunt;
     }
 
     Color intToColor(int val){
@@ -58,14 +63,34 @@ public class MandelbrotModel
     }
 
     Color[][] generateColors(double xstart, double xend, double ystart, double yend){
+
+        int pixelWidthPerThread=PIXELWIDTH/THREADCUNT;
+        MandelbrotThread[] threadarray = new MandelbrotThread[THREADCUNT];
+
         Color[][] colorarray=new Color[PIXELWIDTH][PIXELHEIGHT];
+
+        //threads starten
+        for (int i=0;i<THREADCUNT-1;i++){
+            threadarray[i]=new MandelbrotThread(i*pixelWidthPerThread,pixelWidthPerThread,PIXELHEIGHT);
+            threadarray[i].start();
+        }        
+        threadarray[THREADCUNT-1]=new MandelbrotThread((THREADCUNT-1)*pixelWidthPerThread,(PIXELWIDTH-pixelWidthPerThread*(THREADCUNT-1)),PIXELHEIGHT);
+        threadarray[THREADCUNT-1].start();
+
+        //auf threadterminierung warten
+        try{
+            for(int i=0;i<THREADCUNT-1;i++){
+                threadarray[i].join();
+            }
+        }
+        catch(InterruptedException e){
+            System.out.println("juckt");
+        }
 
         for(int i=0;i<PIXELWIDTH;i++){
             for(int o=0;o<PIXELHEIGHT;o++){
-                colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,ystart+o*(yend-ystart)/PIXELHEIGHT));
+                colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,yend+o*(ystart-yend)/PIXELHEIGHT));
             }
-
-
         }
 
         return colorarray;

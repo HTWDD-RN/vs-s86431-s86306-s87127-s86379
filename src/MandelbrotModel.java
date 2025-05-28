@@ -89,30 +89,28 @@ public class MandelbrotModel
         Color[][] colorarray=new Color[PIXELWIDTH][PIXELHEIGHT];
 
         //threads starten
-        for (int i=0;i<THREADCUNT-1;i++){
-            threadarray[i]=new MandelbrotThread(i*pixelWidthPerThread,pixelWidthPerThread,PIXELHEIGHT);
-            threadarray[i].start();
-        }        
-        threadarray[THREADCUNT-1]=new MandelbrotThread((THREADCUNT-1)*pixelWidthPerThread,(PIXELWIDTH-pixelWidthPerThread*(THREADCUNT-1)),PIXELHEIGHT);
-        threadarray[THREADCUNT-1].start();
-
-        //auf threadterminierung warten
-        try{
-            for(int i=0;i<THREADCUNT-1;i++){
-                threadarray[i].join();
-            }
-        }
-        catch(InterruptedException e){
-            System.out.println("juckt");
-        }
+        //for (int i=0;i<THREADCUNT-1;i++){
+        //    threadarray[i]=new MandelbrotThread(i*pixelWidthPerThread,pixelWidthPerThread,PIXELHEIGHT,xstart+i*((xend-xstart)/THREADCUNT),xstart+(i+1)*((xend-xstart)/THREADCUNT),ystart,yend,colorarray);
+        //    threadarray[i].start();
+        //}        
+        //threadarray[THREADCUNT-1]=new MandelbrotThread((THREADCUNT-1)*pixelWidthPerThread,(PIXELWIDTH-pixelWidthPerThread*(THREADCUNT-1)),PIXELHEIGHT,xstart+(THREADCUNT-1)*((xend-xstart)/THREADCUNT),xend,ystart,yend,colorarray);
+        //threadarray[THREADCUNT-1].start();
+//
+        ////auf threadterminierung warten
+        //try{
+        //    for(int i=0;i<THREADCUNT-1;i++){
+        //        threadarray[i].join();
+        //    }
+        //}
+        //catch(InterruptedException e){
+        //    System.out.println("juckt");
+        //}
 
         for(int i=0;i<PIXELWIDTH;i++){
             for(int o=0;o<PIXELHEIGHT;o++){
                 colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,yend+o*(ystart-yend)/PIXELHEIGHT));
             }
         }
-
         return colorarray;
     }
-
 }

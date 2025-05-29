@@ -6,12 +6,12 @@ public class MandelbrotThread extends Thread {
     private double ystart; //y-Startkoordinate
     private double xend;   //x-Endkoordinate
     private double yend;   //y-Endkoordinate
-    private int pxstart;   //x-Startpunkt im Array
+    private int offset;   //x-Startpunkt im Array
     private int PIXELWIDTH;//Weite des Arrayabschnitts
     private int PIXELHEIGHT;//vertikale Pixelanzahl
     private int MAX_ITERATIONS=1000;
 
-    Color[][] colorarray;
+    private Color[][] colorarray;
 
     private int iter(double a, double b) {
 
@@ -74,26 +74,29 @@ public class MandelbrotThread extends Thread {
     }
 
     public void run(){
-        //System.out.println("AAAAAAAAAAAHHHHHHHHHHH");
 
-        for(int i=pxstart;i<PIXELWIDTH;i++){
+        //System.out.println("my coords: " + xstart + ", " + xend);
+        //System.out.println("my pixelwidth: " + PIXELWIDTH);
+        //System.out.println("my offset: " + offset);
+        //System.out.println("");
+        //System.out.println("started");
+        for(int i=offset;i<offset+PIXELWIDTH;i++){
             for(int o=0;o<PIXELHEIGHT;o++){
-                System.out.println("tets");
                 colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,yend+o*(ystart-yend)/PIXELHEIGHT));
+                //System.out.println("Added value at ["+i+"]["+o+"]:");
             }
         }
-
     }
 
 
-    MandelbrotThread(int pxstart,int width,int PIXELHEIGHT,double xstart,double xend,double ystart,double yend,Color[][] colorarray){
-        this.pxstart=pxstart;
+    MandelbrotThread(double xstart, double xend, double ystart, double yend, int offset,int pixelWidthPerThread,Color[][] colorarray){
+        this.offset=offset;
         this.xstart=xstart;
         this.xend=xend;
         this.ystart=ystart;
         this.yend=yend;
-        this.PIXELWIDTH=width;
-        this.PIXELHEIGHT=PIXELHEIGHT;
+        this.PIXELWIDTH=pixelWidthPerThread;
+        this.PIXELHEIGHT=colorarray[0].length;
         this.colorarray=colorarray;
     }
 }

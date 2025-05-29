@@ -86,31 +86,37 @@ public class MandelbrotModel
         int pixelWidthPerThread=PIXELWIDTH/THREADCUNT;
         MandelbrotThread[] threadarray = new MandelbrotThread[THREADCUNT];
 
+        //System.out.println("x: " + xstart + " to " + xend);
+        //System.out.println("y: " + ystart + " to " + yend);
+
         Color[][] colorarray=new Color[PIXELWIDTH][PIXELHEIGHT];
 
-        //threads starten
-        //for (int i=0;i<THREADCUNT-1;i++){
-        //    threadarray[i]=new MandelbrotThread(i*pixelWidthPerThread,pixelWidthPerThread,PIXELHEIGHT,xstart+i*((xend-xstart)/THREADCUNT),xstart+(i+1)*((xend-xstart)/THREADCUNT),ystart,yend,colorarray);
-        //    threadarray[i].start();
-        //}        
-        //threadarray[THREADCUNT-1]=new MandelbrotThread((THREADCUNT-1)*pixelWidthPerThread,(PIXELWIDTH-pixelWidthPerThread*(THREADCUNT-1)),PIXELHEIGHT,xstart+(THREADCUNT-1)*((xend-xstart)/THREADCUNT),xend,ystart,yend,colorarray);
-        //threadarray[THREADCUNT-1].start();
-//
-        ////auf threadterminierung warten
-        //try{
-        //    for(int i=0;i<THREADCUNT-1;i++){
-        //        threadarray[i].join();
-        //    }
-        //}
-        //catch(InterruptedException e){
-        //    System.out.println("juckt");
-        //}
+        //System.out.println("Pixelwidth:" + PIXELWIDTH);
+        //System.out.println("pixelWidthPerThread:" + pixelWidthPerThread);
 
-        for(int i=0;i<PIXELWIDTH;i++){
-            for(int o=0;o<PIXELHEIGHT;o++){
-                colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,yend+o*(ystart-yend)/PIXELHEIGHT));
+        //START THREADS (EXCEPT LAST SLICE)
+        for (int i=0;i<THREADCUNT-1;i++){
+            threadarray[i]=new MandelbrotThread(xstart,xend,ystart,yend,i*pixelWidthPerThread,pixelWidthPerThread,colorarray);
+            threadarray[i].start();
+            //System.out.println("Started Thread " + i);
+            
+        }        
+        
+        //START LAST THREAD (FOR LAST SLICE)
+        threadarray[THREADCUNT-1]=new MandelbrotThread(xstart,xend,ystart,yend,(THREADCUNT-1)*pixelWidthPerThread,colorarray.length-(THREADCUNT-1)*pixelWidthPerThread,colorarray);
+        threadarray[THREADCUNT-1].start();
+
+        //WAIT FOR ALL THREADS TO TERMINATE
+        try{
+            for(int i=0;i<THREADCUNT-1;i++){
+                threadarray[i].join();
             }
+            threadarray[THREADCUNT-1].join();
         }
+        catch(InterruptedException e){
+            System.out.println("juckt");
+        }
+        
         return colorarray;
     }
 }

@@ -62,8 +62,10 @@ public class MandelbrotPresenter implements ActionListener
             Color[][] c;
             for (int i = 0; i < ZOOM_STEPS && !isInterrupted(); i++) {
                 c = model.generateColors(xmin, xmax, ymin, ymax);
-                UpdateRequest update = new UpdateRequest(view, c);
-                EventQueue.invokeLater(update);
+                if (c != null) {
+                    UpdateRequest update = new UpdateRequest(view, c);
+                    EventQueue.invokeLater(update);
+                }
                 double x = xmax - xmin;
                 double y = ymax - ymin;
 

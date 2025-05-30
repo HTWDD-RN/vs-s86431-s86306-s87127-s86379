@@ -72,8 +72,8 @@ public class MandelbrotModel
         for (int i=0;i<THREADCUNT-1;i++){
             threadarray[i]=new MandelbrotThread(xstart,xend,ystart,yend,i*pixelWidthPerThread,pixelWidthPerThread,colorarray);
             threadarray[i].start();
-        }        
-        
+        }
+
         //START LAST THREAD (FOR LAST SLICE)
         threadarray[THREADCUNT-1]=new MandelbrotThread(xstart,xend,ystart,yend,(THREADCUNT-1)*pixelWidthPerThread,colorarray.length-(THREADCUNT-1)*pixelWidthPerThread,colorarray);
         threadarray[THREADCUNT-1].start();
@@ -87,6 +87,7 @@ public class MandelbrotModel
         }
         catch(InterruptedException e){
             System.out.println("Starting anew...");
+            return null;
         }
 
         return colorarray;

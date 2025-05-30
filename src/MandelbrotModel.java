@@ -6,6 +6,12 @@ public class MandelbrotModel
     int PIXELHEIGHT;
     int PIXELWIDTH;
     int THREADCUNT=8;
+    private Color[] blendedColors = new Color[MAX_ITERATIONS+1];
+    private static final Color[] colors = new Color[]{
+            Color.BLUE,
+            new Color(32, 107, 203),
+            new Color(237, 255, 255),
+            new Color(255, 153, 51)};
 
     public void setPIXELHEIGHT(int height){
         PIXELHEIGHT=height;
@@ -19,24 +25,36 @@ public class MandelbrotModel
         this.THREADCUNT=cunt;
     }
 
+    public void setMAX_ITERATIONS(int MAX_ITERATIONS) {
+        this.MAX_ITERATIONS = MAX_ITERATIONS;
+        generateBlendedColors();
+    }
+
+    private void generateBlendedColors() {
+        for (int i = 0; i <= MAX_ITERATIONS; i++)
+        {
+            blendedColors[i] = intToColor(i);
+        }
+    }
+
     Color intToColor(int val){
 
         Color x;
         Color y;
         float blending;
 
-        if (val < 25) {
-            x = Color.BLUE;
-            y = new Color(32, 107, 203);
-            blending = (float) val / 25;
-        } else if (val < 150) {
-            x = new Color(32, 107, 203);
-            y = new Color(237, 255, 255);
-            blending = (float) val / (150 - 25);
+        if (val < MAX_ITERATIONS * 0.025) {
+            x = colors[0];
+            y = colors[1];
+            blending = (float) (val /(MAX_ITERATIONS * 0.025));
+        } else if (val < MAX_ITERATIONS * 0.15) {
+            x = colors[1];
+            y = colors[2];
+            blending = (float) (val / (MAX_ITERATIONS * 0.15 - MAX_ITERATIONS * 0.025));
         } else {
-            x = new Color(237, 255, 255);
-            y = new Color(255, 153, 51);
-            blending = (float) val / (1000 - 150);
+            x = colors[2];
+            y = colors[3];
+            blending = (float) (val / (MAX_ITERATIONS - MAX_ITERATIONS * 0.15));
         }
 
         float inverse_blending = 1 - blending;
@@ -70,12 +88,12 @@ public class MandelbrotModel
 
         //START THREADS (EXCEPT LAST SLICE)
         for (int i=0;i<THREADCUNT-1;i++){
-            threadarray[i]=new MandelbrotThread(xstart,xend,ystart,yend,i*pixelWidthPerThread,pixelWidthPerThread,colorarray);
+            threadarray[i]=new MandelbrotThread(xstart,xend,ystart,yend,i*pixelWidthPerThread,pixelWidthPerThread,colorarray, blendedColors);
             threadarray[i].start();
         }
 
         //START LAST THREAD (FOR LAST SLICE)
-        threadarray[THREADCUNT-1]=new MandelbrotThread(xstart,xend,ystart,yend,(THREADCUNT-1)*pixelWidthPerThread,colorarray.length-(THREADCUNT-1)*pixelWidthPerThread,colorarray);
+        threadarray[THREADCUNT-1]=new MandelbrotThread(xstart,xend,ystart,yend,(THREADCUNT-1)*pixelWidthPerThread,colorarray.length-(THREADCUNT-1)*pixelWidthPerThread,colorarray, blendedColors);
         threadarray[THREADCUNT-1].start();
 
         //WAIT FOR ALL THREADS TO TERMINATE

@@ -29,6 +29,7 @@ public class MandelbrotPresenter implements ActionListener
         view.setDim(pixelWidth, pixelHeight);
         model.setPIXELHEIGHT(pixelHeight);
         model.setPIXELWIDTH(pixelWidth);
+        model.setMAX_ITERATIONS(1000);
         real = Double.parseDouble(view.reField.getText());
         im = Double.parseDouble(view.imField.getText());
         zoomFactor = Double.parseDouble(view.zoomField.getText());

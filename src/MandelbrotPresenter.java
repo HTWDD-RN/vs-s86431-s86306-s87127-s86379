@@ -61,11 +61,13 @@ public class MandelbrotPresenter implements ActionListener
         @Override
         public void run() {
             Color[][] c;
-            for (int i = 0; i < ZOOM_STEPS && !isInterrupted(); i++) {
+            for (int i = 0; i < ZOOM_STEPS; i++) {
                 c = model.generateColors(xmin, xmax, ymin, ymax);
                 if (c != null) {
                     UpdateRequest update = new UpdateRequest(view, c);
                     EventQueue.invokeLater(update);
+                } else {
+                    break;
                 }
                 double x = xmax - xmin;
                 double y = ymax - ymin;

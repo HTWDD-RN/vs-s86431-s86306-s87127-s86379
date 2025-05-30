@@ -11,6 +11,12 @@ public class MandelbrotThread extends Thread {
     private int PIXELHEIGHT;//vertikale Pixelanzahl
     private int MAX_ITERATIONS=1000;
 
+    private static Color[] colors = new Color[]{
+            Color.BLUE,
+            new Color(32, 107, 203),
+            new Color(237, 255, 255),
+            new Color(255, 153, 51)};
+
     private Color[][] colorarray;
 
     private int iter(double a, double b) {
@@ -38,16 +44,16 @@ public class MandelbrotThread extends Thread {
         float blending;
 
         if (val < 25) {
-            x = Color.BLUE;
-            y = new Color(32, 107, 203);
+            x = colors[0];
+            y = colors[1];
             blending = (float) val / 25;
         } else if (val < 150) {
-            x = new Color(32, 107, 203);
-            y = new Color(237, 255, 255);
+            x = colors[1];
+            y = colors[2];
             blending = (float) val / (150 - 25);
         } else {
-            x = new Color(237, 255, 255);
-            y = new Color(255, 153, 51);
+            x = colors[2];
+            y = colors[3];
             blending = (float) val / (1000 - 150);
         }
 

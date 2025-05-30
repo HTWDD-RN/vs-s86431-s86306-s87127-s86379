@@ -32,7 +32,7 @@ public class MandelbrotThread extends Thread {
     }
 
     Color intToColor(int val){
-        //TODO: geringe Iterationszahl manuell mit Farben bestücken
+        
         Color x;
         Color y;
         float blending;
@@ -74,20 +74,15 @@ public class MandelbrotThread extends Thread {
     }
 
     public void run(){
+        
+        double coordinterval=(xend-xstart)/colorarray.length;
 
-        //System.out.println("my coords: " + xstart + ", " + xend);
-        //System.out.println("my pixelwidth: " + PIXELWIDTH);
-        //System.out.println("my offset: " + offset);
-        //System.out.println("");
-        //System.out.println("started");
         for(int i=offset;i<offset+PIXELWIDTH;i++){
             for(int o=0;o<PIXELHEIGHT;o++){
-                colorarray[i][o]=intToColor(iter(xstart+i*(xend-xstart)/PIXELWIDTH,yend+o*(ystart-yend)/PIXELHEIGHT));
-                //System.out.println("Added value at ["+i+"]["+o+"]:");
+                colorarray[i][o]=intToColor(iter(xstart+i*coordinterval,yend+o*(ystart-yend)/PIXELHEIGHT));
             }
         }
     }
-
 
     MandelbrotThread(double xstart, double xend, double ystart, double yend, int offset,int pixelWidthPerThread,Color[][] colorarray){
         this.offset=offset;

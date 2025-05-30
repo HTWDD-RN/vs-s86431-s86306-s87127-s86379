@@ -5,25 +5,7 @@ public class MandelbrotModel
     int MAX_ITERATIONS = 1000;
     int PIXELHEIGHT;
     int PIXELWIDTH;
-    int THREADCUNT=4;
-
-    private int iter(double a, double b) {
-
-        double x = 0.0;
-        double y = 0.0;
-        int iterations = 0;
-        
-        do {
-            double xnew = x * x - y * y + a;
-            double ynew = 2 * x * y + b;
-            x = xnew;
-            y = ynew;
-            iterations++;
-            if (iterations == MAX_ITERATIONS)
-                return MAX_ITERATIONS;
-            } while (x*x+y*y<=4);
-                return iterations;
-    }
+    int THREADCUNT=8;
 
     public void setPIXELHEIGHT(int height){
         PIXELHEIGHT=height;
@@ -38,7 +20,7 @@ public class MandelbrotModel
     }
 
     Color intToColor(int val){
-        //TODO: geringe Iterationszahl manuell mit Farben bestücken
+
         Color x;
         Color y;
         float blending;
@@ -81,25 +63,15 @@ public class MandelbrotModel
 
     Color[][] generateColors(double xstart, double xend, double ystart, double yend){
 
-        //TODO: Berechnung in Threads einfügen
-
         int pixelWidthPerThread=PIXELWIDTH/THREADCUNT;
         MandelbrotThread[] threadarray = new MandelbrotThread[THREADCUNT];
 
-        //System.out.println("x: " + xstart + " to " + xend);
-        //System.out.println("y: " + ystart + " to " + yend);
-
         Color[][] colorarray=new Color[PIXELWIDTH][PIXELHEIGHT];
-
-        //System.out.println("Pixelwidth:" + PIXELWIDTH);
-        //System.out.println("pixelWidthPerThread:" + pixelWidthPerThread);
 
         //START THREADS (EXCEPT LAST SLICE)
         for (int i=0;i<THREADCUNT-1;i++){
             threadarray[i]=new MandelbrotThread(xstart,xend,ystart,yend,i*pixelWidthPerThread,pixelWidthPerThread,colorarray);
             threadarray[i].start();
-            //System.out.println("Started Thread " + i);
-            
         }        
         
         //START LAST THREAD (FOR LAST SLICE)
@@ -114,9 +86,9 @@ public class MandelbrotModel
             threadarray[THREADCUNT-1].join();
         }
         catch(InterruptedException e){
-            System.out.println("juckt");
+            System.out.println("Starting anew...");
         }
-        
+
         return colorarray;
     }
 }

@@ -5,7 +5,7 @@ public class MandelbrotModel
     int MAX_ITERATIONS = 1000;
     int PIXELHEIGHT;
     int PIXELWIDTH;
-    int THREADCUNT=8;
+    int THREADCUNT=1;
     private Color[] blendedColors = new Color[MAX_ITERATIONS+1];
     private static final Color[] colors = new Color[]{
             Color.BLUE,

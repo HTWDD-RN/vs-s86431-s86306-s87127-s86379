@@ -124,6 +124,7 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
     {
         @Override
         public void run() {
+            long start = System.currentTimeMillis();
             for (int i = 0; i < ZOOM_STEPS; i++) {
                 // Anzahl der aktuell registrierten Worker
                 int available = workers.size();
@@ -201,6 +202,7 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
                 ymin = im - (y / 2) * zoomFactor;
                 ymax = im + (y / 2) * zoomFactor;
             }
+            System.out.println("Zoom completed in " + (System.currentTimeMillis()-start));
         }
 
         class StripeResult

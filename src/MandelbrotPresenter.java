@@ -25,6 +25,8 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
     double im;
     double zoomFactor;
 
+    int maxIterations = 1000;
+
     double xmin = -1.66666;
     double xmax = 1;
     double ymin = -1;
@@ -32,18 +34,33 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
 
     ZoomThread thread;
 
-    int maxWorkers = 4;
-
     private final List<WorkerRemote> workers = new ArrayList<>();
+
+    public MandelbrotPresenter(int maxIterations, int pixelWidth, int pixelHeight, int zoom_steps) {
+        this.maxIterations = maxIterations;
+        this.pixelWidth = pixelWidth;
+        this.pixelHeight = pixelHeight;
+        this.ZOOM_STEPS = zoom_steps;
+    }
+
+    public MandelbrotPresenter() {
+    }
 
     @Override
     public synchronized void registerWorker(WorkerRemote worker) throws RemoteException {
-        if (workers.size() < maxWorkers) {
-            workers.add(worker);
-            System.out.println("Worker registered: " + worker);
-        } else {
-            System.out.println("Max number of workers reached, cannot register: " + worker);
-        }
+        workers.add(worker);
+        System.out.println("Worker registered: " + worker);
+    }
+
+    @Override
+    public synchronized void unregisterWorker(WorkerRemote worker) throws RemoteException {
+        workers.remove(worker);
+        System.out.println("Worker unregistered: " + worker);
+    }
+
+    @Override
+    public int getMaxIterations() throws RemoteException {
+        return maxIterations;
     }
 
     public void setModelAndView(MandelbrotModel model, MandelbrotView view) {
@@ -54,14 +71,14 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
         view.setDim(pixelWidth, pixelHeight);
         model.setPIXELHEIGHT(pixelHeight);
         model.setPIXELWIDTH(pixelWidth);
-        model.setMAX_ITERATIONS(1000);
+        model.setMAX_ITERATIONS(maxIterations);
         real = Double.parseDouble(view.reField.getText());
         im = Double.parseDouble(view.imField.getText());
         zoomFactor = Double.parseDouble(view.zoomField.getText());
 
         // Presenter als Master registrieren
         try {
-            
+
             MandelbrotMasterRemote stub = (MandelbrotMasterRemote) UnicastRemoteObject.exportObject(this, 0);
 
             //Registry auf Port 1099
@@ -103,7 +120,8 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
         calc();
     }
 
-    public class ZoomThread extends Thread {
+    public class ZoomThread extends Thread
+    {
         @Override
         public void run() {
             for (int i = 0; i < ZOOM_STEPS; i++) {
@@ -136,14 +154,14 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
 
                     for (int wIdx = 0; wIdx < available; wIdx++) {
                         final int yStart = wIdx * rowsPerWorker;
-                        final int yEnd   = (wIdx == available - 1) ? height : (yStart + rowsPerWorker);
+                        final int yEnd = (wIdx == available - 1) ? height : (yStart + rowsPerWorker);
                         final int yChunkSize = yEnd - yStart;
                         final WorkerRemote w = workers.get(wIdx);
 
                         new Thread(() -> {
                             try {
                                 Color[][] stripe = w.generateColors(
-                                    xmin, xmax, ymin + yStart * imagStepPerPixel, ymin + yEnd * imagStepPerPixel, width, yChunkSize
+                                        xmin, xmax, ymin + yStart * imagStepPerPixel, ymin + yEnd * imagStepPerPixel, width, yChunkSize
                                 );
                                 results.add(new StripeResult(yStart, yChunkSize, stripe));
                             } catch (RemoteException e) {
@@ -185,10 +203,12 @@ public class MandelbrotPresenter implements ActionListener, MandelbrotMasterRemo
             }
         }
 
-        class StripeResult {
+        class StripeResult
+        {
             int yStart;
             int yChunkSize;
             Color[][] stripe;
+
             StripeResult(int yStart, int yChunkSize, Color[][] stripe) {
                 this.yStart = yStart;
                 this.yChunkSize = yChunkSize;

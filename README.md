@@ -5,3 +5,27 @@ Gruppen Mitglieder
 - s86431 Frederic Niklas Egle
 - s87127 Til Guhlmann
 - s86379 Niklas Benjamin Große
+
+## Verwendete Architektur
+Worker melden sich beim Server an. Der Server verteilt die Aufgabe an die einzelnen Worker. Sollten beim Server keine Worker registriert sein, berechnet der Server die Mandelbrotmenge allein.
+
+
+## Leistung der einzelnen Teammitglieder
+Marius Hoffmann:
+- Berechnung innerhalb des Models
+- Farbverlauf (erste Variante)
+- Verteilung der Berechnung auf Threads
+
+Frederic Egle:
+- erste Darstellungsform
+- verbesserter Farbverlauf
+- Bugfixes
+- GUI (Zoom etc.)
+
+Til Guhlmann:
+- Berechnung innerhalb des Models
+- Farbverlauf (erste Variante)
+
+Niklas Große:
+- RMI-Implementation
+

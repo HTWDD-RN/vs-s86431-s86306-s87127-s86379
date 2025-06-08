@@ -7,7 +7,8 @@ Gruppen Mitglieder
 - s86379 Niklas Benjamin Große
 
 ## Verwendete Architektur
-...
+Worker melden sich beim Server an. Der Server verteilt die Aufgabe an die einzelnen Worker. Sollten beim Server keine Worker registriert sein, berechnet der Server die Mandelbrotmenge allein.
+
 
 ## Leistung der einzelnen Teammitglieder
 Marius Hoffmann:
